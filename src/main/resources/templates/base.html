@@ -1,0 +1,211 @@
+<!doctype html>
+ <!-- Old <html lang="en" xmlns:th="http://www.thymeleaf.org">   -->
+<html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <title>Air Quality</title>
+  </head>
+  <body>
+      
+      
+      
+      
+      
+    <!-- Main Body of Page -->
+            <div class="col-12 m-1 text-center" 
+                  th:if="${!violations.isEmpty()}">
+                <p class="alert alert-danger" th:each="error : ${violations}" 
+                    th:text="${error.message}">Error message</p>
+            </div>
+    
+    
+    
+    
+    <!-- Login form at the top -->
+<form action="logInUser" method="GET">
+
+  <div class="container">
+    <label for="uname"><b>Username</b></label>
+    <input type="text" placeholder="Enter Username" name="uname" required>
+
+    <label for="psw"><b>Password</b></label>
+    <input type="password" placeholder="Enter Password" name="psw" required>
+
+    <button type="submit">Login</button>
+
+    
+      <div class="container signin">
+    <p>No account? <a href="registration">Register</a>.</p>
+  </div>
+    
+    
+  </div>
+</form>
+    
+    
+    <!-- Title -->
+    <div class="container">
+        <div class="row m-4">
+            <div class="col text-center border border-dark">
+                <h1>Air Quality Information</h1>
+                <p>Data from <a href="https://aqicn.org/api/"> https://aqicn.org/api/</a></p>
+            </div>
+        </div>
+        
+        
+        
+    <!--  Search bar -->
+            <div class="row m-4 border border-dark">
+                <div class="col-3 text-center m-3">
+                    <span class="h3">Search for a city:</span>
+                </div>
+                
+                <div class="col-7 text-center m-3">
+                    <form action="searchStations" method="GET">
+                        
+                        <div class="form-group row">
+                            <label for="searchTerm" class="col-3 col-form-label">
+                                </label>
+                            <div class="col-9">
+                                <input type="text" name="searchTerm" 
+                                       id="searchTerm" class="form-control"/>
+                            </div>
+                        </div>
+                        
+
+                        <button type="submit" class="btn btn-primary">Search</button>
+                    </form>
+                    
+                </div>
+            </div>
+    
+    
+    <!--  Display Search Results -->
+            <div class="row m-4 border border-dark">
+                <div class="col-3 text-center m-3">
+                    <span class="h3">Select a location: </span>
+                </div>
+                
+                <div class="col-7 text-center m-3">
+                    <form action="loadStationReport" method="GET">
+                
+                        <div class="form-group row">
+                            <label for="stationName" class="col-3 col-form-label">
+                                Locations</label>
+                            <div class="col-9">
+                                <select id="superhero" name="stationName" class="form-control" >
+                                    <option th:each="stationName : ${searchResultsNames}" 
+                                            th:value="${stationName}" 
+                                            th:text="${stationName}" >
+                                         </option>
+                                </select>
+                            </div>
+                        </div>
+                   
+
+                        
+                        
+                        <button type="submit" class="btn btn-primary">Select</button>
+                    </form>
+                </div>
+            </div>
+    
+    
+<!--  Print out Air Quality Index number (with color) -->
+
+
+    
+    
+<!--  Display Today's pollutants -->
+        <div class="container">
+            <div class="row m-4">
+                <div class="col text-center border border-dark">
+                    <h1><a href="/" class="text-dark">Air Quality Report</a></h1>
+                    
+                </div>
+            </div>
+            
+            <div class="row m-4">
+                <div class="col text-center border border-dark">
+                    <td th:text="${dataLoadError}"></td>
+                </div>
+            </div>
+            
+            
+
+            
+            <div class="row m-4 border border-dark">
+                <div class="col text-center m-3">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <td> <a href="https://www.epa.gov/co-pollution/basic-information-about-carbon-monoxide-co-outdoor-air-pollution#Effects">Carbon Monoxide</a>  </td>
+                                <td> <a href="https://en.wikipedia.org/wiki/Humidity#Human_comfort">Relative Humidity</a>  </td>
+                                <td> <a href="https://www.epa.gov/no2-pollution/basic-information-about-no2#Effects">Nitrogen Dioxide</a>  </td>
+                                <td> <a href="https://www.epa.gov/ground-level-ozone-pollution/health-effects-ozone-pollution">Ozone</a>  </td>
+                                <td> <a href="https://www.medicinenet.com/how_does_barometric_pressure_affect_humans/article.htm">Atmospheric Pressure</a>  </td>
+                                <td> <a href="https://www.epa.gov/pm-pollution/particulate-matter-pm-basics">Particulate Matter 10</a>  </td>
+                                <td> <a href="https://www.epa.gov/pm-pollution/particulate-matter-pm-basics">Particulate Matter 2.5</a>  </td>
+                                <td> <a href="https://www.epa.gov/so2-pollution/sulfur-dioxide-basics#effects">Sulfur Dioxide</a>  </td>
+                                <td> <a href="https://www.healthline.com/health/extreme-temperature-safety#extreme-cold-temperatures">Temperature</a>  </td>
+                                <td> <a href="https://www.weather.gov/mlb/seasonal_wind_rules">Wind</a>  </td>
+                            </tr>
+                        </thead>
+                        
+                        
+                        <tbody>
+                            
+                                <td th:text="${co}">Carbon Monoxide</td>
+                                <td th:text="${h}">Relative Humidity</td>
+                                <td th:text="${no2}">Nitrogen Dioxide</td>
+                                <td th:text="${o3}">Ozone</td> 
+                                <td th:text="${p}">Atmospheric Pressure</td> 
+                                <td th:text="${pm10}">Particulate Matter 10</td>
+                                <td th:text="${pm25}">Particulate Matter 25</td>
+                                <td th:text="${so2}">Sulfur Dioxide</td>       
+                                <td th:text="${t}">Temperature</td>     
+                                <td th:text="${w}">Wind</td>    
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div> 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <!-- End main body -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+  </body>
+</html>;
+
+
+
